@@ -52,7 +52,7 @@ ShowPPData::~ShowPPData()
 
 }
 
-void ShowPPData::Run()
+int32_t ShowPPData::Run()
 {
     int key_value;
     while (1)
@@ -60,35 +60,40 @@ void ShowPPData::Run()
         imshow(window_name_, show_image_dynamic_);
         key_value = waitKey(-1);
         // printf("key_value:%d\n", key_value);
-        switch (key_value) {
-        case 27:
-            return;
-        case 83:
-        case 100:
-            if (show_start_index_ > 0)
-            {
-                show_start_index_--;
-            }
-            break;
-        case 81:
-        case 97:
-            if ((show_start_index_ + show_len_) < data_len_)
-            {
-                show_start_index_++;
-            }
-            break;
-        case 45:
-            Zoom(1.1);
-            break;
-        case 61:
-            Zoom(1.0/1.1);
-            break;
-        default:
-            break;
+        switch (key_value)
+        {
+            case 27:
+            case 'n':
+            case 'N':
+                return key_value;
+            case 83:  // ->
+            case 'd':
+            case 'D':
+                if (show_start_index_ > 0)
+                {
+                    show_start_index_--;
+                }
+                break;
+            case 81:  // <-
+            case 'a':
+            case 'A':
+                if ((show_start_index_ + show_len_) < data_len_)
+                {
+                    show_start_index_++;
+                }
+                break;
+            case 45:  // -
+                Zoom(1.1);
+                break;
+            case 61:  // +
+                Zoom(1.0/1.1);
+                break;
+            default:
+                break;
         }
         RefreshImage();
     }
-    return;
+    return 0;
 }
 
 void ShowPPData::Zoom(double zoom_ratio)
@@ -216,6 +221,7 @@ void ShowPPData::RefreshImage()
     vol_ratio_ = vol_window_.height / max_vol;
 
     Point pt1, pt2;
+    Point pt1_avg_5, pt2_avg_5;
     Rect vol;
     for (int i = 0; i < show_len_; i++)
     {
@@ -225,6 +231,14 @@ void ShowPPData::RefreshImage()
         if (i > 0)
         {
             ShowLine(show_image_, pt1, pt2);
+        }
+
+        pt2_avg_5 = pt1_avg_5;
+        pt1_avg_5.x = pt1.x;
+        pt1_avg_5.y = price_window_.y + price_window_.height - (PP_DATA(i + show_start_index_, PPI_close_5_avg) - min_close) * close_ratio_;
+        if (i > 0)
+        {
+            ShowLine(show_image_, pt1_avg_5, pt2_avg_5, g_pinkish_red);
         }
 
         vol.height = PP_DATA(i + show_start_index_, PPI_vol) * vol_ratio_;

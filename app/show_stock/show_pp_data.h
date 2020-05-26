@@ -15,7 +15,7 @@ public:
     ShowPPData();
     ~ShowPPData();
 
-    void Run();
+    int32_t Run();
     void SetData(double_t *p_data, uint32_t data_len);
     void SetShowData(uint32_t start_index, uint32_t show_len);
     void Zoom(double zoom_ratio);

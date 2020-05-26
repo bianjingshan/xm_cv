@@ -41,7 +41,10 @@ int main(int argc, char *argv[]) {
             }
             show.SetData(pp_data, a.shape[0]);
             show.SetShowData(rand() % (a.shape[0] - FLAGS_l * 2) + FLAGS_l * 2, FLAGS_l);
-            show.Run();
+            if (27 == show.Run())
+            {
+                break;
+            }
         }
     }
     else
