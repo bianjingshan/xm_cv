@@ -4,7 +4,7 @@
 #include <math.h>
 #include "xm_text.h"
 #include "xm_image.h"
-#include "xm_time.h"
+#include "time_utils.h"
 
 
 
@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     Mat image;
     CreateImage(image, Size(1280, 720), 3);
     MatSet(image, g_black);
-    XMTime timer;
+    TickTime timer;
     timer.start();
     xm_text.putTextMat(image, Point(100, 100), "这是一段中文。Hello world. 2020-03-06");
     printf("%f ms\n", timer.timerMsec());

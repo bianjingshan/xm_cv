@@ -1,4 +1,4 @@
-﻿#ifdef _WIN32
+#ifdef _WIN32
 #include <windows.h>
 #else
 #include <unistd.h>
@@ -7,7 +7,7 @@
 #endif
 #include <string.h>
 #include <stdio.h>
-#include "xm_search_files.h"
+#include "search_files.h"
 
 
 const char *image_ext_name[]={".jpg", ".bmp", ".jpeg", ".png", ".gif", NULL};

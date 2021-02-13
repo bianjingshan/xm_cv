@@ -5,7 +5,7 @@
 //using namespace std;
 using namespace cv;
 
-#include "xm_file.h"
+#include "file_utils.h"
 
 #ifndef MODULE_OK
 #define MODULE_OK 0

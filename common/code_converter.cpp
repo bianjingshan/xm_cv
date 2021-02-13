@@ -4,7 +4,7 @@
 #include <string.h>
 #include <iconv.h>
 #include <iostream>
-#include "xm_code.h"
+#include "code_converter.h"
 
 using namespace std;
 

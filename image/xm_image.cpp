@@ -9,8 +9,8 @@
 using namespace std;
 using namespace cv;
 
-#include "xm_string.h"
-#include "xm_file.h"
+#include "string_utils.h"
+#include "file_utils.h"
 #include "xm_image.h"
 
 Scalar g_red(0, 0, 255);

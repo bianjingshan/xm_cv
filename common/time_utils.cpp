@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #ifdef _WIN32
@@ -6,39 +6,39 @@
 #else
 #include <sys/time.h>
 #endif
-#include "xm_time.h"
+#include "time_utils.h"
 
-XMTime::XMTime(void)
+TickTime::TickTime(void)
 {
 	start();
 }
 
-void XMTime::start(void)
+void TickTime::start(void)
 {
     m_start_time = currentTimeUsec();
 }
 
-double XMTime::timerSec()
+double TickTime::timerSec()
 {
     return (currentTimeUsec() - m_start_time) / 1000000.0;
 }
 
-double XMTime::timerMsec()
+double TickTime::timerMsec()
 {
     return (currentTimeUsec() - m_start_time) / 1000.0;
 }
 
-double XMTime::timer()
+double TickTime::timer()
 {
     return timerSec();
 }
 
-uint64_t XMTime::timerUsec()
+uint64_t TickTime::timerUsec()
 {
     return currentTimeUsec() - m_start_time;
 }
 
-uint64_t XMTime::currentTimeUsec(void)
+uint64_t TickTime::currentTimeUsec(void)
 {
 #ifdef _WIN32
     return ((uint64_t)clock() * (uint64_t)1000000 / (uint64_t)CLOCKS_PER_SEC);
@@ -49,7 +49,26 @@ uint64_t XMTime::currentTimeUsec(void)
 #endif
 }
 
-uint64_t XMTime::currentTimeSec()
+uint32_t TickTime::currentTimeMsecCut(void)
+{
+    struct timeval t_start;
+    gettimeofday(&t_start, NULL);
+    return (uint32_t)(t_start.tv_usec / 1000);
+}
+
+void TickTime::currentDateTime(XMDTime_t *date_time)
+{
+    dateTime(currentTimeSec(), date_time);
+}
+
+void TickTime::currentTimeString(char *buffer, int time_format)
+{
+    struct timeval t_start;
+    gettimeofday(&t_start, NULL);
+    timeString(buffer, t_start.tv_sec, (uint32_t)(t_start.tv_usec / 1000), time_format);
+}
+
+uint64_t TickTime::currentTimeSec()
 {
 #ifdef _WIN32
     return ((uint64_t)clock() / (uint64_t)CLOCKS_PER_SEC);
@@ -60,16 +79,16 @@ uint64_t XMTime::currentTimeSec()
 #endif
 }
 
-const char *XMTime::timeString(uint64_t time_sec, int time_format)
+const char *TickTime::timeString(uint64_t time_sec, uint32_t ms, int time_format)
 {
-    if (!timeString(m_string_buffer, time_sec, time_format))
+    if (!timeString(m_string_buffer, time_sec, ms, time_format))
     {
         m_string_buffer[0] = 0;
     }
     return m_string_buffer;
 }
 
-bool XMTime::timeString(char *p_buffer, uint64_t time_sec, int time_format)
+bool TickTime::timeString(char *p_buffer, uint64_t time_sec, uint32_t ms, int time_format)
 {
     time_t temp_time = time_sec;
     struct tm *tt = localtime(&temp_time);
@@ -97,6 +116,17 @@ bool XMTime::timeString(char *p_buffer, uint64_t time_sec, int time_format)
                 tt->tm_min,
                 tt->tm_sec);
     }
+    else if(time_format==2)
+    {
+        sprintf(p_buffer, "%04u-%02u-%02u %02u:%02u:%02u:%03u",
+                tt->tm_year+1900,
+                tt->tm_mon+1,
+                tt->tm_mday,
+                tt->tm_hour,
+                tt->tm_min,
+                tt->tm_sec,
+                ms);
+    }
     else
     {
         return false;
@@ -104,7 +134,7 @@ bool XMTime::timeString(char *p_buffer, uint64_t time_sec, int time_format)
     return true;
 }
 
-bool XMTime::dateTime(uint64_t time_sec, XMDTime_t *date_time)
+bool TickTime::dateTime(uint64_t time_sec, XMDTime_t *date_time)
 {
     time_t temp_time = time_sec;
     struct tm *tt = localtime(&temp_time);

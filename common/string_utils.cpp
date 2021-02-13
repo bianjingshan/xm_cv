@@ -1,9 +1,9 @@
-﻿#include <string.h>
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "xm_math.h"
-#include "xm_string.h"
+#include "common.h"
+#include "string_utils.h"
 
 #ifdef _WIN32
 #include "windows.h"

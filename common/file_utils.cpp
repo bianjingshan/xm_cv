@@ -1,4 +1,4 @@
-﻿#ifdef _WIN32
+#ifdef _WIN32
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
@@ -22,7 +22,7 @@
 #include <string.h>
 #include <stdio.h>
 #endif
-#include "xm_file.h"
+#include "file_utils.h"
 
 bool FileExist(const char *p_file_name)
 {

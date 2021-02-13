@@ -16,6 +16,7 @@ AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../common SRCS_common)
 AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../image SRCS_image)
 AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../freetype SRCS_freetype)
 AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/freetype_test SRCS_freetype_test)
+AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/log_test SRCS_log_test)
 
 add_executable(freetype_test
 ${SRCS_image}
@@ -28,3 +29,8 @@ ${OpenCV_LIBS}
 freetype
 pthread
 z)
+
+add_executable(log_test
+${SRCS_common}
+${SRCS_log_test}
+)

@@ -5,7 +5,7 @@
 #include <math.h>
 #include <gflags/gflags.h>
 #include "show_pp_data.h"
-#include "xm_search_files.h"
+#include "search_files.h"
 
 using namespace std;
 
